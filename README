@@ -19,6 +19,11 @@ explain it could be achieved. I wrote the demo program to test my theory
 and also, to have a complete implementation actually suitable for
 human digestion.
 
+NB: This is an algorithmic demonstration *and* *not* an armour-plated
+one supposed to be usable to deflect  machine-gun fire of a
+dedicated enemy. As such, it uses simple C types like int and unsigned
+without regard for their necessarily limited size.
+
 
 Basic Idea
 ----------
