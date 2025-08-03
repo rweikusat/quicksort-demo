@@ -3,7 +3,6 @@
 */
 
 /**  includes */
-#include <alloca.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -78,7 +77,7 @@ int main(int argc, char **argv)
     }
 
     --argc;
-    nums = alloca(argc * sizeof(int));
+    nums = malloc(argc * sizeof(int));
     fill_nums(argv + 1, nums);
 
     print_nums("input", nums, argc);
