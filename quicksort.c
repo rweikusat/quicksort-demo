@@ -53,7 +53,7 @@ static void qs(int *nums, unsigned l, unsigned r)
     or = r;
     while (l < r) {
         if (nums[l] > pivot) {
-            while (r > l && nums[r] > pivot) --r;
+            while (nums[r] > pivot && --r > l);
 
             if (r > l) {
                 swap(nums, l, r);
