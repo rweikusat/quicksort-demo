@@ -51,7 +51,7 @@ static void qs(int *nums, unsigned l, unsigned r)
     pivot = nums[r];
     ol = l;
     or = r;
-    while (l < r) {
+    do {
         if (nums[l] > pivot) {
             while (nums[r] > pivot && --r > l);
 
@@ -59,8 +59,9 @@ static void qs(int *nums, unsigned l, unsigned r)
                 swap(nums, l, r);
                 ++l;
             }
-        } else ++l;
-    }
+        } else
+            ++l;
+    } while (l < r);
 
     qs(nums, ol, l - 1);
     qs(nums, l, or);
