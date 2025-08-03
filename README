@@ -1,0 +1,69 @@
+Quicksort Demo
+==============
+A while ago, I noticed that I had, because of years of non-use,
+forgotten how this algorithm worked. I tried to look it up in a German
+edition of Sedgewick's "Algorithms and Datastructures in C" which
+deserves to be famous for the inadequacy of its explanations and the
+incomprehensibility of its code examples and found it ... well
+... incomprehensible. Next, I tried Wikipedia,  with no more
+success. While I obviously have "The Art of Computer Programming"
+here, I didn't try that for reasons anybody who knows the books will
+understand. I then let he matter rest for a few months.
+
+Some days ago, during an evening in the pub, my mind picked this up
+again but instead of trying to just look it up somewhere, I set forth
+to work it out in my head based on my general knowledge about how the
+algorithm is supposed to work. This turned out be surprisingly easy
+for something such heights of incomprehensibility while trying to
+explain it can be achieved. I wrote the demo program to test my theory
+and also, to have a complete implementation actually suitable for
+human digestion.
+
+
+Basic Idea
+----------
+The basic idea behind quicksort is to pick a pivot element from the
+array that's to be sorted. Neither the position of this element nor
+its value matter for the algorithm although the ideal choice would be
+to always pick the element in the middle. The array is then
+partitioned into two subarrays, a left one which contains all elements
+<= the pivot and a right one which contains all > than it. The
+algorithm is then recursively applied to these two subfields.
+
+The recursion terminates when the size of the subfield which is to be
+sorted is either 0 or 1 (trivially sorted). A subfield of size 2 is
+handled specially by comparing both elements, swapping them if
+necessary, and terminating the recursion as well.
+
+
+Invocation
+----------
+The qs function is invoked with three arguments: A pointer to the
+complete field that's to be sorted, the index of the left-most element
+of the subfield this invocation should handle and the index of the
+right-most element of this subfield.
+
+
+Choice of Pivot
+---------------
+This implementation choses the right-most element in the field as
+pivot because this avoids dealing with the special case of having chosen
+the largest number which would cause the partitioning loop described
+below to terminate with left and right index pointing to the last
+element of the array. If that's the pivot, no furhter action is
+necessary. Otherwise, the pivot element would need to be swapped with
+the last element.
+
+
+Partitioning Loop
+-----------------
+The partitioning loop works as follows: First, record the original left
+position ("ol") and the original right position ("or"). Starting from
+the left ("l"), look for an element that's larger than the pivot. If
+such an element is found, move downwards from the right ("r") until an
+element not larger than the pivot is found or r collides with l. If
+such an element was found, swap the elements at position r and l and
+increase l. The outer loop terminates once l == r.
+
+At this point, the subfield ol .. l - 1 contains all members <= the
+pivot and the subfield, l .. or all which are > than the pivot.
