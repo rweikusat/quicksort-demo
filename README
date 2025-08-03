@@ -14,8 +14,8 @@ Some days ago, during an evening in the pub, my mind picked this up
 again but instead of trying to just look it up somewhere, I set forth
 to work it out in my head based on my general knowledge about how the
 algorithm is supposed to work. This turned out be surprisingly easy
-for something such heights of incomprehensibility while trying to
-explain it can be achieved. I wrote the demo program to test my theory
+for something where such heights of incomprehensibility while trying to
+explain it could be achieved. I wrote the demo program to test my theory
 and also, to have a complete implementation actually suitable for
 human digestion.
 
@@ -40,17 +40,19 @@ Invocation
 ----------
 The qs function is invoked with three arguments: A pointer to the
 complete field that's to be sorted, the index of the left-most element
-of the subfield this invocation should handle and the index of the
-right-most element of this subfield.
+of the subfield this invocation should handle ("l") and the index of the
+right-most element of this subfield ("r").
+
+NB: This means that the length of this subfield is r + 1 - l.
 
 
 Choice of Pivot
 ---------------
-This implementation choses the right-most element in the field as
+This implementation choses the right-most element of the field as
 pivot because this avoids dealing with the special case of having chosen
 the largest number which would cause the partitioning loop described
 below to terminate with left and right index pointing to the last
-element of the array. If that's the pivot, no furhter action is
+element of the array. If that's the pivot, no further action is
 necessary. Otherwise, the pivot element would need to be swapped with
 the last element.
 
@@ -60,10 +62,13 @@ Partitioning Loop
 The partitioning loop works as follows: First, record the original left
 position ("ol") and the original right position ("or"). Starting from
 the left ("l"), look for an element that's larger than the pivot. If
-such an element is found, move downwards from the right ("r") until an
+such an element is found, move leftward from the right ("r") until an
 element not larger than the pivot is found or r collides with l. If
 such an element was found, swap the elements at position r and l and
 increase l. The outer loop terminates once l == r.
 
 At this point, the subfield ol .. l - 1 contains all members <= the
-pivot and the subfield, l .. or all which are > than the pivot.
+pivot and the subfield l .. or all which are > than the pivot unless
+the pivot was itself the largest element. For this special case, all
+elements in the left subfield are <= the pivot and the right subfield
+contains just the pivot.
