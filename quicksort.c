@@ -18,9 +18,9 @@ static void fill_nums(char **args, int *nums)
     }
 }
 
-static void print_nums(int *nums, unsigned n)
+static void print_nums(char *what, int *nums, unsigned n)
 {
-    printf("%d", *nums);
+    printf("%s: %d", what, *nums);
     while (--n) printf(" %d", *++nums);
     putchar('\n');
 }
@@ -41,7 +41,7 @@ static void qs(int *nums, unsigned l, unsigned r)
 
     switch (r + 1 - l) {
     case 2:
-        if (nums[l] > nums[r - 1]) swap(nums, l, r);
+        if (nums[l] > nums[r]) swap(nums, l, r);
 
     case 1:
     case 0:
@@ -79,8 +79,10 @@ int main(int argc, char **argv)
     --argc;
     nums = alloca(argc * sizeof(int));
     fill_nums(argv + 1, nums);
-    qs(nums, 0, argc);
-    print_nums(nums, argc - 1);
+
+    print_nums("input", nums, argc);
+    qs(nums, 0, argc - 1);
+    print_nums("sorted", nums, argc);
 
     return 0;
 }
