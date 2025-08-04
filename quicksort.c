@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**  variables */
+static unsigned comps, swaps;
+
 /**  routines */
 static void fill_nums(char **args, int *nums)
 {
@@ -27,6 +30,8 @@ static void print_nums(char *what, int *nums, unsigned n)
 static void swap(int *nums, unsigned p0, unsigned p1)
 {
     int x;
+
+    ++swaps;
 
     x = nums[p0];
     nums[p0] = nums[p1];
@@ -51,8 +56,10 @@ static void qs(int *nums, unsigned l, unsigned r)
     ol = l;
     or = r;
     do {
+        ++comps;
+
         if (nums[l] > pivot) {
-            while (nums[r] > pivot && --r > l);
+            while (++comps, nums[r] > pivot && --r > l);
 
             if (r > l) {
                 swap(nums, l, r);
@@ -83,6 +90,7 @@ int main(int argc, char **argv)
     print_nums("input", nums, argc);
     qs(nums, 0, argc - 1);
     print_nums("sorted", nums, argc);
+    printf("comparisons: %u, swaps %u\n", comps, swaps);
 
     return 0;
 }
