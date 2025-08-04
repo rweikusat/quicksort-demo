@@ -3,7 +3,9 @@
 
   Second algorithm more in line with the one described by Knuth/
   Sedgewick. Somewhat faster in the sense that it usually needs less
-  comparisons and swaps for the same input.
+  comparisons and swaps for the same input. The partitioning loop
+  should also be somewhat faster due to simpler code but I haven't
+  looked at the machine code in detail.
 */
 
 /**  includes */
@@ -63,7 +65,6 @@ static void qs(int *nums, unsigned l, unsigned r)
         ++l;
         ++comps;
         if (nums[l] > pivot) {
-
             while (++comps, nums[r] > pivot) --r;
             if (r > l) swap(nums, l, r);
         }
