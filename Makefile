@@ -9,5 +9,10 @@ ifdef FINAL
 CFLAGS := $(CFLAGS) -O2
 endif
 
-quicksort: quicksort.c
+all: quicksort qs-faster
+
+quicksort:
+qs-faster:
+
+%: %.c
 	$(CC) $(CFLAGS) -o $@ $^
