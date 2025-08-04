@@ -3,3 +3,11 @@
 # shootour script --- run both programs on the same
 # data set to get number for comparisons and swaps for both
 #
+
+PATH=/ust/local/bin:/bin:/usr/bin
+export PATH
+
+test $# != 1 && {
+    printf 'Usage: ./shootout <lenght of test vector>\n' >&2
+    exit 1
+}
