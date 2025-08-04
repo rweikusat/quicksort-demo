@@ -11,3 +11,12 @@ test $# != 1 && {
     printf 'Usage: ./shootout <lenght of test vector>\n' >&2
     exit 1
 }
+
+n="$1"
+input=`seq 1 $n | shuf`
+test $? = 0 || exit 1
+
+printf 'quicksort\n\n'
+./quicksort $input
+printf '\nqs-faster\n\n'
+./qs-faster $input
