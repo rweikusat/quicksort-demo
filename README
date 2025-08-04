@@ -20,9 +20,20 @@ and also, to have a complete implementation actually suitable for
 human digestion.
 
 NB: This is an algorithmic demonstration *and* *not* an armour-plated
-one supposed to be usable to deflect  machine-gun fire of a
+implementation supposed to be usable to deflect machine-gun fire of a
 dedicated enemy. As such, it uses simple C types like int and unsigned
 without regard for their necessarily limited sizes.
+
+
+,----
+| Original Idea
+`----
+
+The description below applies to the algorithm I originally came up
+with. After having another look at both Knuth's and Sedgewick's texts,
+I created a second version which is better in the sense that it
+usually needs fewer comparisons and swaps for the same dataset, albeit
+not "order-of-magnitude-style" better. This one is described below.
 
 
 Basic Idea
@@ -77,3 +88,60 @@ pivot and the subfield l .. or all which are > than the pivot unless
 the pivot was itself the largest element. For this special case, all
 elements in the left subfield are <= the pivot and the right subfield
 contains just the pivot.
+
+
+,----
+| Faster Algorithm
+`----
+
+This describes only the differences to the other algorithm.
+
+
+Basic Idea
+----------
+The difference to the first alogrithm is that this one partitions the
+input field in three subfields, a left one which contains all input
+elements <= the pivot, the pivot itself and a right subfield
+containing all elements > than it. This is accomplished by swapping
+the pivot with the right-most element of the left subfield after
+partitioning as that's the position the pivot must occupy in the fully
+sorted field.
+
+
+Choice of Pivot
+---------------
+In order to move the pivot to its final location in the sorted array
+after the partioning loop terminated, the position of the pivot in the
+partioned array must obviously be known. Hence, this algorithm uses
+the first input element as pivot as that's the only one where it's
+guaranteed that it then won't be moved during the partitioning step.
+
+
+Partitioning Loop
+-----------------
+While the basic idea for this loop is the same as for the other and
+the code is actually simpler, the interactions of the different parts
+are more complicated.
+
+At the beginning of the loop, l points either to
+the pivot or to the last element which was examined. Thus. the loop
+starts with incrementing l. If the element at the new position is >
+than the pivot, an inner loop scans lefward from r for an element
+that's <= the pivot. No collision check is necessary for this loop
+because it's guaranteed that such an element will be found at position
+l - 1. After the inner loop, if r > l, the elements at l and r are
+swapped and the outer loop continues. If r > l is false, the conditon
+of the outer loop, l < r, will necessaribly false as well and hence,
+the outer loop terminates, too. For this case, r == l - 1 will be true
+because nums[l] > pivot was true. r thus points to the right-most
+element of the left subfield and l to the left-most element if the
+right subfield. If r > ol, that is, the left-most subfield has at
+least two elements, the pivot at ol and the element at r are swapped
+and the algorithm is recursivley applied to ol .. r - 1. Afterwards,
+if l < or, the right-most subfield has at least two elements, it'll be
+applied to l .. or.
+
+If the outer loop terminates without finding an element > than the
+pivot, l == r will be true and the element at r will be <= the
+pivot. Swapping the pivot with the element at r, followed by running
+the algorithm recursively on ol .. r - 1 will thus work.
