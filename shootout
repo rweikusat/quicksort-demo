@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# shootour script --- run both programs on the same
+# shootout script --- run both programs on the same
 # data set to get number for comparisons and swaps for both
 #
 
