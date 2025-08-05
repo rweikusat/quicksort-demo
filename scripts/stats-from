@@ -20,7 +20,11 @@ while (<STDIN>) {
 }
 
 $avg = int($sum / @vs);
+$sum = 0;
+$sum += abs($avg - $_) for @vs;
+
 printf("avg %u\n", $avg);
+printf("std dev %u\n", $sum / @vs);
 printf("max %u\n", $max);
 printf("min %u\n", $min);
 
