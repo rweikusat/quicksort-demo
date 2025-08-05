@@ -126,7 +126,7 @@ are more complicated.
 At the beginning of the loop, l points either to
 the pivot or to the last element which was examined. Thus. the loop
 starts with incrementing l. If the element at the new position is >
-than the pivot, an inner loop scans lefward from r for an element
+than the pivot, an inner loop scans leftward from r for an element
 that's <= the pivot. No collision check is necessary for this loop
 because it's guaranteed that such an element will be found at position
 l - 1. After the inner loop, if r > l, the elements at l and r are
