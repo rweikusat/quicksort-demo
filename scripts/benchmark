@@ -43,6 +43,6 @@ test "$TTY" && {
 }
 
 printf "comparisons\n\n"
-scripts/stats-from <tmp/cmps
+scripts/stats-from $ELEMS <tmp/cmps
 printf "\nswaps\n\n"
-scripts/stats-from <tmp/swaps
+scripts/stats-from $ELEMS <tmp/swaps
