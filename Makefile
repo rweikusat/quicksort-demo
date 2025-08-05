@@ -22,7 +22,7 @@ clean:
 
 benchmark: all
 	scripts/benchmark bin/quicksort
-	-printf '\n'
+	@printf '\n'
 	scripts/benchmark bin/qs-faster
 
 shootout: all
