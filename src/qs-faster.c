@@ -96,9 +96,9 @@ int main(int argc, char **argv)
     nums = malloc(argc * sizeof(int));
     fill_nums(argv + 1, nums);
 
-    print_nums("input", nums, argc);
+//    print_nums("input", nums, argc);
     qs(nums, 0, argc - 1);
-    print_nums("sorted", nums, argc);
+//    print_nums("sorted", nums, argc);
     printf("comparisons %u swaps %u\n", comps, swaps);
 
     return 0;
