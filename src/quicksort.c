@@ -90,7 +90,7 @@ int main(int argc, char **argv)
     print_nums("input", nums, argc);
     qs(nums, 0, argc - 1);
     print_nums("sorted", nums, argc);
-    printf("comparisons: %u, swaps %u\n", comps, swaps);
+    printf("comparisons %u swaps %u\n", comps, swaps);
 
     return 0;
 }
