@@ -9,8 +9,8 @@ export PATH
 
 test "$TRACE" && set -x
 
-ELEMS=65536
-ITERS=10000
+ELEMS=16384
+ITERS=4000
 
 PRG="$1"
 
