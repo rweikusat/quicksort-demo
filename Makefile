@@ -13,12 +13,17 @@ N ?= 16
 
 PRGS :=	$(addprefix bin/, quicksort qs-faster)
 
-.PHONY: all clean shootout
+.PHONY: all benchmark clean shootout
 
 all: $(PRGS)
 
 clean:
 	rm -f $(PRGS)
+
+benchmark: all
+	scripts/benchmark bin/quicksort
+	printf '\n'
+	scripts/benchmark bin/qs-faster
 
 shootout: all
 	scripts/shootout $(N)
