@@ -66,7 +66,11 @@ static void qs(int *nums, unsigned l, unsigned r)
         ++comps;
         if (nums[l] > pivot) {
             while (++comps, nums[r] > pivot) --r;
-            if (r > l) swap(nums, l, r);
+
+            if (r > l) {
+                swap(nums, l, r);
+                --r;
+            }
         }
     } while (l < r);
 
