@@ -14,13 +14,20 @@ ITERS=4000
 
 PRG="$1"
 
+unset TTY
+perl -e '-t(STDOUT) and exit 0; exit 1' && TTY=1
+
 >tmp/cmps
 >tmp/swaps
 
 until test $ITERS = 0;
 do
-    in=`seq 1 $ELEMS | shuf`
-    out=`$PRG $in | grep comparisons`
+    test "$TTY" && {
+        tput el1
+        printf "\r%s" "$ITERS" >/dev/tty
+    }
+
+    out=$($PRG $(shuf -i 1-$ELEMS) | grep comparisons)
     cmps=`printf "%s" "$out" | cut -d' ' -f 2`
     swps=`printf "%s" "$out" | cut -d' ' -f 4`
 
@@ -28,5 +35,14 @@ do
     printf "%s\n" "$swps" >>tmp/swaps
 
     ITERS=`expr $ITERS - 1`
-    printf "%s\n" "$ITERS" >&2
 done
+
+test "$TTY" && {
+    tput el1
+    printf '\r'
+}
+
+printf "comparisons\n\n"
+scripts/stats-from <tmp/cmps
+printf "\nswaps\n\n"
+scripts/stats-from <tmp/swaps
