@@ -3,3 +3,23 @@
 # run a standard benchmark for a sorting program
 # and determine some statistics about comparions and swaps
 #
+
+PATH=/usr/local/bin:/bin:/usr/bin
+export PATH
+
+test "$TRACE" && set -x
+
+ELEMS=65536
+ITERS=10000
+
+PRG="$1"
+
+>tmp/cmps
+>tmp/swaps
+
+#until $ITERS = 0;
+#do
+    in=`seq 1 $ELEMS | shuf`
+    out=`$PRG $in | grep comparisons`
+    cmps=`printf "%s" $out | cut -d' ' -f 2`
+    swps=`printf "%s" $out | cut -d' ' -f 4`
