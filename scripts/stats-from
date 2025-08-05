@@ -2,3 +2,21 @@
 #
 # collect some simple stats from an input file
 #
+
+my (@vs, $min, $max, $sum);
+
+$_ = <STDIN>;
+chomp;
+$min = $max = $sum = $_;
+push(@vs, $_);
+
+while (<STDIN>) {
+    chomp;
+
+    $sum += $_;
+    $min = $_ if $_ < $min;
+    $max = $_ if $_ > $max;
+    push(@vs, $_);
+}
+
+printf("avg %u (n * log n %u)\n", $sum / @vs, $ARGV[0] * log($ARGV [0]) / log(2));
