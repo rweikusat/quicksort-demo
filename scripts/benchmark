@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# run a standard benchmark for a sorting program
+# and determine some statistics about comparions and swaps
+#
