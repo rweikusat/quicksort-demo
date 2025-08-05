@@ -50,6 +50,6 @@ The "nlogn" factors (average divided by number of elements times
 log₂(number of elements), the theoretically best value) seem to
 consistent for different array sizes and iteration counts.
 
-The three way partioning algorithm à la Sedgewick/ Knuth is thus
+The three way partitioning algorithm à la Sedgewick/ Knuth is thus
 clearly better than the one I invented on my own although the
 difference is fairly slight.
