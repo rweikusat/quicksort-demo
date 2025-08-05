@@ -3,7 +3,7 @@
 # collect some simple stats from an input file
 #
 
-my (@vs, $min, $max, $sum);
+my (@vs, $avg, $min, $max, $sum);
 
 $_ = <STDIN>;
 chomp;
@@ -19,4 +19,10 @@ while (<STDIN>) {
     push(@vs, $_);
 }
 
-printf("avg %u (n * log n %u)\n", $sum / @vs, $ARGV[0] * log($ARGV [0]) / log(2));
+$avg = int($sum / @vs);
+printf("avg %u\n", $avg);
+printf("max %u\n", $max);
+printf("min %u\n", $min);
+
+@vs = sort {$a <=> $b} (@vs);
+printf("median %u\n", $vs[@vs / 2]);
