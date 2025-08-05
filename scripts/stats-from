@@ -3,7 +3,7 @@
 # collect some simple stats from an input file
 #
 
-my (@vs, $avg, $min, $max, $sum);
+my (@vs, $avg, $min, $max, $sum, $nlogn);
 
 $_ = <STDIN>;
 chomp;
@@ -22,8 +22,9 @@ while (<STDIN>) {
 $avg = int($sum / @vs);
 $sum = 0;
 $sum += abs($avg - $_) for @vs;
+$nlogn = $ARGV[0] * log($ARGV[0]) / log(2);
 
-printf("avg %u\n", $avg);
+printf("avg %u\n (%.2f nlogn)", $avg, $nlogn / $avg);
 printf("std dev %u\n", $sum / @vs);
 printf("max %u\n", $max);
 printf("min %u\n", $min);
