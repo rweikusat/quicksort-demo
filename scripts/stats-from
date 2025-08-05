@@ -24,7 +24,7 @@ $sum = 0;
 $sum += abs($avg - $_) for @vs;
 $nlogn = $ARGV[0] * log($ARGV[0]) / log(2);
 
-printf("avg %u (%.2f nlogn)\n", $avg, $avg/ $nlogn);
+printf("avg %u (%.2f nlogn)\n", $avg, $avg / $nlogn);
 printf("std dev %u\n", $sum / @vs);
 printf("max %u\n", $max);
 printf("min %u\n", $min);
