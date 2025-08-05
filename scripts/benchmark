@@ -17,9 +17,16 @@ PRG="$1"
 >tmp/cmps
 >tmp/swaps
 
-#until $ITERS = 0;
-#do
+until test $ITERS = 0;
+do
     in=`seq 1 $ELEMS | shuf`
     out=`$PRG $in | grep comparisons`
-    cmps=`printf "%s" $out | cut -d' ' -f 2`
-    swps=`printf "%s" $out | cut -d' ' -f 4`
+    cmps=`printf "%s" "$out" | cut -d' ' -f 2`
+    swps=`printf "%s" "$out" | cut -d' ' -f 4`
+
+    printf "%s\n" "$cmps" >>tmp/cmps
+    printf "%s\n" "$swps" >>tmp/swaps
+
+    ITERS=`expr $ITERS - 1`
+    printf "%s\n" "$ITERS" >&2
+done
