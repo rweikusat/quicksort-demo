@@ -17,6 +17,6 @@ input=`seq 1 $n | shuf`
 test $? = 0 || exit 1
 
 printf 'quicksort\n\n'
-./quicksort $input
+bin/quicksort $input
 printf '\nqs-faster\n\n'
-./qs-faster $input
+bin/qs-faster $input
