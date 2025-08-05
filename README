@@ -130,16 +130,20 @@ than the pivot, an inner loop scans lefward from r for an element
 that's <= the pivot. No collision check is necessary for this loop
 because it's guaranteed that such an element will be found at position
 l - 1. After the inner loop, if r > l, the elements at l and r are
-swapped and the outer loop continues. If r > l is false, the conditon
-of the outer loop, l < r, will necessaribly false as well and hence,
-the outer loop terminates, too. For this case, r == l - 1 will be true
-because nums[l] > pivot was true. r thus points to the right-most
-element of the left subfield and l to the left-most element if the
-right subfield. If r > ol, that is, the left-most subfield has at
-least two elements, the pivot at ol and the element at r are swapped
-and the algorithm is recursivley applied to ol .. r - 1. Afterwards,
-if l < or, the right-most subfield has at least two elements, it'll be
-applied to l .. or.
+swapped and the outer loop continues. As minor optimization for the
+case that another swap will be necessary in future, r is decremented
+as it's already know that the element at r is > than the pivot and
+thus, can't be used for a future swap operation.
+
+If r > l is false, the conditon of the outer loop, l < r, will
+necessaribly false as well and hence, the outer loop terminates,
+too. For this case, r == l - 1 will be true because nums[l] > pivot
+was true. r thus points to the right-most element of the left subfield
+and l to the left-most element if the right subfield. If r > ol, that
+is, the left-most subfield has at least two elements, the pivot at ol
+and the element at r are swapped and the algorithm is recursivley
+applied to ol .. r - 1. Afterwards, if l < or, the right-most subfield
+has at least two elements, it'll be applied to l .. or.
 
 If the outer loop terminates without finding an element > than the
 pivot, l == r will be true and the element at r will be <= the
