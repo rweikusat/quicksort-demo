@@ -9,16 +9,14 @@ ifdef FINAL
 CFLAGS := $(CFLAGS) -O2
 endif
 
+PRGS :=	$(addprefix bin/, quicksort qs-faster)
+
 .PHONY: all clean
 
-all: quicksort qs-faster
+all: $(PRGS)
 
 clean:
-	rm -f quicksort
-	rm -f qs-faster
+	rm -f $(PRGS)
 
-quicksort:
-qs-faster:
-
-%: %.c
+bin/%: src/%.c
 	$(CC) $(CFLAGS) -o $@ $^
