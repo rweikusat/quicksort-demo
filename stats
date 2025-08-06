@@ -13,38 +13,37 @@ quicksort algorithm
 -------------------
 comparisons
 
-avg 367584 (1.60 nlogn)
-std dev 8492
-max 422977
-min 340545
-median 366169
+avg 367599 (1.60 nlogn)
+std dev 8503
+max 432185
+min 342129
+median 366264
 
 swaps
 
 avg 53651 (0.23 nlogn)
-std dev 319
-max 54800
-min 51662
-median 53687
-
+std dev 318
+max 54782
+min 51957
+median 53684
 
 qs-faster algorithm
 -------------------
 comparisons
 
-avg 323050 (1.41 nlogn)
-std dev 9572
-max 375537
-min 291638
-median 321958
+avg 277239 (1.21 nlogn)
+std dev 8532
+max 340026
+min 251075
+median 275632
 
 swaps
 
-avg 51597 (0.22 nlogn)
-std dev 328
-max 52686
-min 49985
-median 51635
+avg 51589 (0.22 nlogn)
+std dev 326
+max 52814
+min 50025
+median 51630
 
 The "nlogn" factors (average divided by number of elements times
 log₂(number of elements), the theoretically best value) seem to
