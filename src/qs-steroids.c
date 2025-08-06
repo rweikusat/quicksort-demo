@@ -17,6 +17,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+
+/** constants */
+enum {
+    N_THREADS =		4
+};
 
 /**  types */
 struct work_item {
@@ -179,16 +185,32 @@ static void qs(int *nums, unsigned l, unsigned r)
 /**  main */
 int main(int argc, char **argv)
 {
-    int *nums;
+    int *nums, c;
+    unsigned n_threads;
 
-    if (argc < 2) {
-        fputs("Usage: quicksort <number>+\n", stderr);
+    n_threads = 0;
+    while (c = getopt(argc, argv, "n:"), c != -1)
+        switch (c) {
+        case 'n':
+            n_threads = atoi(optarg);
+            break;
+
+        case '?':
+            fputs("unkown option\n", stderr);
+            exit(1);
+        }
+
+    argc -= optind;
+    if (!argc) {
+        fputs("Usage: qs-steroids [-n <# of threads>] <number>+\n", stderr);
         exit(1);
     }
-
-    --argc;
+    argv += optind;
     nums = malloc(argc * sizeof(int));
-    fill_nums(argv + 1, nums);
+    fill_nums(argv, nums);
+
+    if (n_threads < 1) n_threads = N_THREADS;
+    start_threads(n_threads);
 
     qs(nums, 0, argc - 1);
     print_nums("sorted", nums, argc);
