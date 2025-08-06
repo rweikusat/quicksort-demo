@@ -12,6 +12,7 @@
 */
 
 /**  includes */
+#include <assert.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,6 +47,32 @@ struct {
 };
 
 /**  routines */
+/***  MT support */
+static void post_work_item(int *nums, unsigned l, unsigned r)
+{
+    struct work_item *wi;
+    int rc;
+
+    wi = malloc(sizeof(*wi));
+    assert(wi);
+    wi->p = NULL;
+    wi->nums = nums;
+    wi->l = l;
+    wi->r = r;
+
+    rc = pthread_mutex_lock(&q.lock);
+    assert(!rc);
+
+    *q.chain = wi;
+    q.chain = &wi->p;
+
+    rc = pthread_mutex_unlock(&q.lock);
+    assert(!rc);
+    rc = pthread_cond_signal(&q.cond);
+    assert(!rc);
+}
+
+/***  quicksort proper */
 static void fill_nums(char **args, int *nums)
 {
     char *cur;
