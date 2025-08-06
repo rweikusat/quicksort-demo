@@ -135,6 +135,18 @@ static void *thread_run(void *unused)
     return NULL;
 }
 
+static void start_threads(unsigned n)
+{
+    pthread_t tid;
+    int rc;
+
+    while (n) {
+        rc = pthread_create(&tid, NULL, thread_run, NULL);
+        assert(!rc);
+
+        --n;
+    }
+}
 
 /***  quicksort proper */
 static void fill_nums(char **args, int *nums)
