@@ -1,0 +1,13 @@
+qs-steroids
+===========
+
+As Knuth claims that quicksort wouldn't be suitable for parallell
+computing, src/qs-steroids.c is a variant which uses a configurable
+number of worker threads for partitioning subfields of more than 512
+elements (compile-time default).
+
+This is really a gimmick/ multthreading demo as there's - at best - a
+slight speed increase for very large fields (> 145,000 elements) and
+even this only if output of the sorted field is disabled which renders
+the program rather useless. OTOH, "It can be done!"
+
