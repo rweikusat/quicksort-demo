@@ -50,6 +50,9 @@ struct {
 
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
+/**  prototypes */
+static void qs(int *, unsigned, unsigned);
+
 /**  routines */
 /***  MT support */
 static void post_work_item(int *nums, unsigned l, unsigned r)
@@ -116,6 +119,8 @@ static void work_done(void)
     rc = pthread_cond_signal(&active.cond);
     assert(!rc);
 }
+
+
 
 /***  quicksort proper */
 static void fill_nums(char **args, int *nums)
