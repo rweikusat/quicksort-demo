@@ -79,6 +79,7 @@ static void qs(int *nums, unsigned l, unsigned r)
         qs(nums, ol, r - 1);
     }
 
+    if (l == r) ++l;
     if (l < or) qs(nums, l, or);
 }
 
