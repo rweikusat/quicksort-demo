@@ -148,6 +148,19 @@ static void start_threads(unsigned n)
     }
 }
 
+static void wait_for_done(void)
+{
+    int rc;
+
+    rc = pthread_mutex_lock(&lock);
+    assert(!rc);
+
+    while (q.head || active.n) {
+        rc = pthread_cond_wait(&active,cond, &lock);
+        assert(!rc);
+    }
+}
+
 /***  quicksort proper */
 static void fill_nums(char **args, int *nums)
 {
@@ -244,6 +257,8 @@ int main(int argc, char **argv)
     start_threads(n_threads);
 
     qs(nums, 0, argc - 1);
+    wait_for_done();
+
     print_nums("sorted", nums, argc);
 
     return 0;
