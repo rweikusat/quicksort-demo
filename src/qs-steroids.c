@@ -206,7 +206,7 @@ static void qs(int *nums, unsigned l, unsigned r)
 
     if (r > ol) {
         swap(nums, ol, r);
-        qs(nums, ol, r - 1);
+        post_work_item(nums, ol, r - 1);
     }
 
     if (l == r) ++l;
