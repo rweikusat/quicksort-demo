@@ -120,6 +120,20 @@ static void work_done(void)
     assert(!rc);
 }
 
+static void *thread_run(void *unused)
+{
+    struct work_item *wi;
+
+    while (1) {
+        wi = get_work_item();
+        qs(wi->nums, wi->l, wi->r);
+        work_done();
+
+        free(wi);
+    }
+
+    return NULL;
+}
 
 
 /***  quicksort proper */
