@@ -12,9 +12,38 @@
 */
 
 /**  includes */
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+/**  types */
+struct work_item {
+    struct work_item *p;
+
+    int *nums;
+    unsigned l, r;
+};
+
+/**  variables */
+struct {
+    struct work_item *head, **chain;
+    pthread_mutex_t lock;
+    pthread_cond_t cond;
+} q = {
+    .chain = &q.head,
+    .lock = PTHREAD_MUTEX_INITIALIZER,
+    .cond = PTHREAD_COND_INITIALIZER
+};
+
+struct {
+    unsigned count;
+    pthread_mutex_t lock;
+    pthread_cond_t cond;
+} active = {
+    .lock = PTHREAD_MUTEX_INITIALIZER,
+    .cond = PTHREAD_COND_INITIALIZER
+};
 
 /**  routines */
 static void fill_nums(char **args, int *nums)
