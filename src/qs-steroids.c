@@ -124,6 +124,8 @@ static void *thread_run(void *unused)
 {
     struct work_item *wi;
 
+    (void)unused;
+
     while (1) {
         wi = get_work_item();
         qs(wi->nums, wi->l, wi->r);
