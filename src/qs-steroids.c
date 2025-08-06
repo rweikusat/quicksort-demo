@@ -27,24 +27,22 @@ struct work_item {
 };
 
 /**  variables */
-struct {
+static struct {
     struct work_item *head, **chain;
-    pthread_mutex_t lock;
     pthread_cond_t cond;
 } q = {
     .chain = &q.head,
-    .lock = PTHREAD_MUTEX_INITIALIZER,
     .cond = PTHREAD_COND_INITIALIZER
 };
 
 struct {
-    unsigned count;
-    pthread_mutex_t lock;
+    unsigned n;
     pthread_cond_t cond;
 } active = {
-    .lock = PTHREAD_MUTEX_INITIALIZER,
     .cond = PTHREAD_COND_INITIALIZER
 };
+
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 /**  routines */
 /***  MT support */
@@ -60,13 +58,13 @@ static void post_work_item(int *nums, unsigned l, unsigned r)
     wi->l = l;
     wi->r = r;
 
-    rc = pthread_mutex_lock(&q.lock);
+    rc = pthread_mutex_lock(&lock);
     assert(!rc);
 
     *q.chain = wi;
     q.chain = &wi->p;
 
-    rc = pthread_mutex_unlock(&q.lock);
+    rc = pthread_mutex_unlock(&lock);
     assert(!rc);
     rc = pthread_cond_signal(&q.cond);
     assert(!rc);
@@ -77,21 +75,40 @@ static struct work_item *get_work_item(void)
     struct work_item *wi;
     int rc;
 
-    rc = pthread_mutex_lock(&q.lock);
+    rc = pthread_mutex_lock(&lock);
     assert(!rc);
 
     while (wi = q.head, !wi) {
-        rc = pthread_cond_wait(&q.cond, &q.lock);
+        rc = pthread_cond_wait(&q.cond, &lock);
         assert(!rc);
     }
 
     q.head = wi->p;
     if (!q.head) q.chain = &q.head;
+    ++active.n;
 
-    rc = pthread_mutex_unlock(&q.lock);
+    rc = pthread_mutex_unlock(&lock);
     assert(!rc);
 
     return wi;
+}
+
+static void work_done(void)
+{
+    unsigned n;
+    int rc;
+
+    rc = pthread_mutex_lock(&lock);
+    assert(!rc);
+
+    n = --active.n;
+
+    rc = pthread_mutex_unlock(&lock);
+    assert(!rc);
+    if (n) return;
+
+    rc = pthread_cond_signal(&active.cond);
+    assert(!rc);
 }
 
 /***  quicksort proper */
