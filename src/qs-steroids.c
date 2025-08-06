@@ -72,6 +72,25 @@ static void post_work_item(int *nums, unsigned l, unsigned r)
     assert(!rc);
 }
 
+static struct work_item *get_work_item(void)
+{
+    struct work_item *wi;
+    int rc;
+
+    rc = pthread_mutex_lock(&q.lock);
+    assert(!rc);
+
+    while (wi = q.head, !wi) {
+        rc = pthread_cond_wait(&q.cond, &q.lock);
+        assert(!rc);
+    }
+
+    rc = pthread_mutex_unlock(&q.lock);
+    assert(!rc);
+
+    return wi;
+}
+
 /***  quicksort proper */
 static void fill_nums(char **args, int *nums)
 {
