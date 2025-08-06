@@ -13,6 +13,7 @@
 
 /**  includes */
 #include <assert.h>
+#include <inttypes.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -127,7 +128,7 @@ static void *thread_run(void *arg)
     struct work_item *wi;
     unsigned tid;
 
-    tid = (unsigned)arg;
+    tid = (uintptr_t)arg;
 
     while (1) {
         wi = get_work_item();
@@ -147,7 +148,7 @@ static void start_threads(unsigned n)
     int rc;
 
     while (n) {
-        rc = pthread_create(&tid, NULL, thread_run, (void *)n);
+        rc = pthread_create(&tid, NULL, thread_run, (void *)(uintptr_t)n);
         assert(!rc);
 
         --n;
