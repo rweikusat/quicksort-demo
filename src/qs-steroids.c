@@ -21,7 +21,8 @@
 
 /** constants */
 enum {
-    N_THREADS =		4
+    N_THREADS =		4,
+    MT_THRESH =		512     /* post work to thread for larger subfields */
 };
 
 /**  types */
@@ -49,6 +50,7 @@ static struct {
 };
 
 static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+static int verbose;
 
 /**  prototypes */
 static void qs(int *, unsigned, unsigned);
@@ -129,6 +131,7 @@ static void *thread_run(void *arg)
 
     while (1) {
         wi = get_work_item();
+        if (verbose) fprintf(stderr, "#%u: %u - %u\n", tid, wi->l, wi->r);
         qs(wi->nums, wi->l, wi->r);
         work_done();
 
@@ -222,7 +225,7 @@ static void qs(int *nums, unsigned l, unsigned r)
 
     if (r > ol) {
         swap(nums, ol, r);
-        if (r - ol > 4095) post_work_item(nums, ol, r - 1);
+        if (r - ol > MT_THRESH) post_work_item(nums, ol, r - 1);
         else qs(nums, ol, r - 1);
     }
 
@@ -237,10 +240,14 @@ int main(int argc, char **argv)
     unsigned n_threads;
 
     n_threads = 0;
-    while (c = getopt(argc, argv, "n:"), c != -1)
+    while (c = getopt(argc, argv, "n:v"), c != -1)
         switch (c) {
         case 'n':
             n_threads = atoi(optarg);
+            break;
+
+        case 'v':
+            verbose = 1;
             break;
 
         case '?':
@@ -250,7 +257,7 @@ int main(int argc, char **argv)
 
     argc -= optind;
     if (!argc) {
-        fputs("Usage: qs-steroids [-n <# of threads>] <number>+\n", stderr);
+        fputs("Usage: qs-steroids [-n <# of threads>] [-v] <number>+\n", stderr);
         exit(1);
     }
     argv += optind;
@@ -263,7 +270,7 @@ int main(int argc, char **argv)
     qs(nums, 0, argc - 1);
     wait_for_done();
 
-    print_nums("sorted", nums, argc);
+    if (verbose) print_nums("sorted", nums, argc);
 
     return 0;
 }
