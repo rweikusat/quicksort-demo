@@ -11,7 +11,7 @@ endif
 
 N ?= 16
 
-PRGS :=	$(addprefix bin/, quicksort qs-faster)
+PRGS :=	$(addprefix bin/, quicksort qs-faster qs-steroids)
 
 .PHONY: all benchmark clean shootout
 
@@ -28,5 +28,7 @@ benchmark: all
 shootout: all
 	scripts/shootout $(N)
 
+bin/qs-steroids: LIBS := pthread
+
 bin/%: src/%.c
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ $(addprefix -l, $(LIBS))
