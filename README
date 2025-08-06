@@ -145,7 +145,13 @@ and the element at r are swapped and the algorithm is recursivley
 applied to ol .. r - 1. Afterwards, if l < or, the right-most subfield
 has at least two elements, it'll be applied to l .. or.
 
-If the outer loop terminates without finding an element > than the
-pivot, l == r will be true and the element at r will be <= the
-pivot. Swapping the pivot with the element at r, followed by running
-the algorithm recursively on ol .. r - 1 will thus work.
+If the outer loop terminates because of l == r, this can have happened
+because
+
+    1) ++l hit r but nums[l] <= pivot
+    2) --r after a swap hit l, nums[l] <= pivot because of the swap
+
+In both cases, swapping nums[r] and the pivot, followed by running qs
+on ol .. r - 1 (if not empty) will work. As nums[l] == pivot is now
+true, l is incremented before running qs on l .. or if l < or.
+
