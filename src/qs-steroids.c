@@ -41,14 +41,14 @@ static struct {
     .cond = PTHREAD_COND_INITIALIZER
 };
 
-struct {
+static struct {
     unsigned n;
     pthread_cond_t cond;
 } active = {
     .cond = PTHREAD_COND_INITIALIZER
 };
 
-pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 /**  prototypes */
 static void qs(int *, unsigned, unsigned);
@@ -120,11 +120,12 @@ static void work_done(void)
     assert(!rc);
 }
 
-static void *thread_run(void *unused)
+static void *thread_run(void *arg)
 {
     struct work_item *wi;
+    unsigned tid;
 
-    (void)unused;
+    tid = (unsigned)arg;
 
     while (1) {
         wi = get_work_item();
@@ -143,7 +144,7 @@ static void start_threads(unsigned n)
     int rc;
 
     while (n) {
-        rc = pthread_create(&tid, NULL, thread_run, NULL);
+        rc = pthread_create(&tid, NULL, thread_run, (void *)n);
         assert(!rc);
 
         --n;
@@ -158,7 +159,7 @@ static void wait_for_done(void)
     assert(!rc);
 
     while (q.head || active.n) {
-        rc = pthread_cond_wait(&active,cond, &lock);
+        rc = pthread_cond_wait(&active.cond, &lock);
         assert(!rc);
     }
 }
@@ -221,7 +222,8 @@ static void qs(int *nums, unsigned l, unsigned r)
 
     if (r > ol) {
         swap(nums, ol, r);
-        post_work_item(nums, ol, r - 1);
+        if (r - ol > 4095) post_work_item(nums, ol, r - 1);
+        else qs(nums, ol, r - 1);
     }
 
     if (l == r) ++l;
