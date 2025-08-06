@@ -85,6 +85,9 @@ static struct work_item *get_work_item(void)
         assert(!rc);
     }
 
+    q.head = wi->p;
+    if (!q.head) q.chain = &q.head;
+
     rc = pthread_mutex_unlock(&q.lock);
     assert(!rc);
 
